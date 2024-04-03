@@ -11,6 +11,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import React, { Suspense, lazy } from "react";
 import Dashboard from './pages/dashboard/Dashboard'
 import LoginPage from './pages/login/LoginPage'
+import Analise from './pages/dashboard/Analise'
+import Grafico from './pages/dashboard/Grafico'
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
               <Route path='reservas' element={<Reservas />}></Route>
               <Route path='pedidos' element={<Pedidos />}></Route>
               <Route path='pagamentos' element={<Pagamentos />}></Route>
+              <Route path='grafico' element={<Grafico />}></Route>
+              <Route path='analise' element={<Analise />}></Route>
             </Route>
           </Routes>
         </AuthProvider>
