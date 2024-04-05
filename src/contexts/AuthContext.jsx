@@ -1,12 +1,14 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import http from "../http-common";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
   const navigate = useNavigate();
@@ -26,13 +28,15 @@ export const AuthProvider = ({ children }) => {
           roleCode: response.data.roles[0].role,
           accessToken: response.data.token,
         };
-        
+        toast.success("Usuario cadastrado com sucesso!")
+        setIsAuthenticated(true);
         localStorage.setItem("principal", JSON.stringify(principal));
-        console.log("IsLogged =>",isLogged)
-        //navigate("/")
+        setUser(principal);
+
+        console.log("compilou tudo", principal)
       }
-      
-      
+      //console.log("")
+      navigate("/admin/inicio")
     } catch (error) {
       toast.error("Utilizador ou senha inválidos");
     }
@@ -43,21 +47,26 @@ export const AuthProvider = ({ children }) => {
     const loggedUser = localStorage.getItem("principal");
     if (loggedUser) {
       const parsed = JSON.parse(loggedUser);
-      setUser(parsed);
+
     }
-    
+
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        authenticated: !!user,
-        user,
-        login,
-        
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider
+        value={{
+          authenticated: !!user,
+          user,
+          login,
+
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+      <ToastContainer />
+    </>
+
+
   );
 };
