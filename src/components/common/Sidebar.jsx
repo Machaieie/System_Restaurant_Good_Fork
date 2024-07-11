@@ -26,7 +26,7 @@ const NestedListItem = styled(ListItemButton)({
 const Sidebar = () => {
     const { user } = useContext(AuthContext); 
 
-    
+    //console.log("usuario =>",user)
     return (
         <Drawer
             variant="permanent"

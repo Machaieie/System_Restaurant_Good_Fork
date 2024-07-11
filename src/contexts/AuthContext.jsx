@@ -43,6 +43,8 @@ export const AuthProvider = ({ children }) => {
   };
 
 
+
+
   useEffect(() => {
     const loggedUser = localStorage.getItem("principal");
     if (loggedUser) {
@@ -56,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     <>
       <AuthContext.Provider
         value={{
-          authenticated: !!user,
+          isAuthenticated,
           user,
           login,
 
