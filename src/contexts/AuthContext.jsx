@@ -24,9 +24,9 @@ export const AuthProvider = ({ children }) => {
         const principal = {
           id: response.data.id,
           username: response.data.username,
-          nome: response.data.nome,
-          roleCode: response.data.roles[0].role,
-          accessToken: response.data.token,
+          nome: response.data.firstName,
+          role: response.data.roles[0].role,
+          
         };
         toast.success("Usuario cadastrado com sucesso!")
         setIsAuthenticated(true);
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
         console.log("compilou tudo", principal)
       }
-      //console.log("")
+      
       navigate("/admin/inicio")
     } catch (error) {
       toast.error("Utilizador ou senha inválidos");
