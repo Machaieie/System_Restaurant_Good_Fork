@@ -14,13 +14,13 @@ import {
 import colorConfigs from '../configs/ColorConfig';
 
 const SideRoute = (role) => {
-  const iconStyle = { color: colorConfigs.mycolor }; // Define a cor desejada aqui
+  const iconStyle = { color: colorConfigs.mycolor }; 
 
   const sideItems = [
     {
       id: 1,
       label: "Dashboard",
-      link: "/dashboard",
+      link: "/admin/dashboard",
       roles: ["ADMIN"],
       icon: <DashboardOutlined sx={iconStyle} />
     },
@@ -93,15 +93,15 @@ const SideRoute = (role) => {
     {
       id: 5,
       label: "Conta",
-      link: "/conta",
-      roles: ["ADMIN"],
+      link: "/admin/conta",
+      roles: ["ADMIN", "EMPLOYEE"],
       icon: <Settings sx={iconStyle} />
     },
     {
       id: 6,
       label: "Carteira",
-      link: "/carteira",
-      roles: ["ADMIN", "EMPLOYEE"],
+      link: "/admin/carteira",
+      roles: ["ADMIN"],
       icon: <WalletOutlined sx={iconStyle} />
     },
   ];
