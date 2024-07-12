@@ -1,12 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Box, Card } from "@mui/joy"
+import ReservaForm from './ReservaForm';
 
 const AdicionarReserva = () => {
-    return (
-        <div>
-          Adicionar Reserva  
-        </div>
-    );
+  return (
+    <Box>
+      <Card title='Adicionar Reserva'>
+        <ReservaForm
+        mode={"CREATE"}
+        url={"reservas/adicionarReserva"}
+        successMessage={"Reserva criada com sucesso"}
+        onSuccessNavigateTo={""}
+        />
+      </Card>
+    </Box>
+  );
 };
 
 
