@@ -28,7 +28,9 @@ const AdminLayout = () => {
                 flexGrow:1,
                 width: `calc(100% -${SizeConfigs.sidebar.width})`,
                 minHeight:"100vh",
-                backgroundColor: colorConfigs.mainBg 
+                backgroundColor: colorConfigs.mainBg ,
+                margin:0
+                
             }}
             >
                

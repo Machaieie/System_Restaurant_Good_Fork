@@ -31,7 +31,7 @@ const Topbar = () => {
                 <img src={logo} alt="logo" style={{ width: '10%', marginLeft: 'auto' }} />
 
                 <Typography variant="body1" sx={{ color: '#fff', marginRight: 1 }}>
-                    {userName}
+                    {userName.toUpperCase()}
                 </Typography>
                 <Avatar sx={{ backgroundColor: '#3f51b5' }} variant="rounded">
                     {userInitial}

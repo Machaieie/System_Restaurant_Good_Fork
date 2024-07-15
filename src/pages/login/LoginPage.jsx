@@ -18,6 +18,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginRules } from "../../services/SchemaService";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from 'react-spinners';
+
 
 const theme = createTheme({
     palette: {
@@ -31,6 +33,7 @@ const theme = createTheme({
 });
 
 const LoginPage = () => {
+
     const {
         reset,
         register,
@@ -46,6 +49,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
+        setLoading(true);
         try {
             const response = await login(data.username, data.password);
             reset();
@@ -56,7 +60,9 @@ const LoginPage = () => {
             }
 
         } catch (error) {
-            
+
+        } finally {
+            setLoading(false);
         }
     };
     return (
@@ -124,7 +130,7 @@ const LoginPage = () => {
                     <CardContent>
                         <Typography level="title-lg">Login</Typography>
                         <Divider />
-                        <Card sx={{height:"auto"}}>
+                        <Card sx={{ height: "auto" }}>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <FormControl>
                                     <Grid container sx={{ marginTop: 4 }}>
@@ -148,28 +154,56 @@ const LoginPage = () => {
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Button
-                                        variant="outlined"
-                                        color='neutral'
-                                        type='submit'
-                                        sx={{
-                                            '--variant-borderWidth': '1px',
-                                            borderRadius: 40,
+                                    <Box>
+                                        {!isLoading ? (
+                                            <Button
+                                                variant="outlined"
+                                                color='neutral'
+                                                type='submit'
+                                                sx={{
+                                                    '--variant-borderWidth': '1px',
+                                                    borderRadius: 40,
 
-                                            mx: 'auto',
-                                            width: 180,
-                                            backgroundColor: colorConfigs.mycolor,
-                                            fontSize: 16,
-                                            color: "#fff",
-                                            transition: 'background-color 0.3s ease-in-out', // Adicionando transição suave
-                                            '&:hover': {
-                                                backgroundColor: colorConfigs.sidebar.bg,
-                                                // Defina a cor desejada para o hover
-                                            }
-                                        }}
-                                    >
-                                        Entrar
-                                    </Button>
+                                                    mx: 'auto',
+                                                    width: 180,
+                                                    backgroundColor: colorConfigs.mycolor,
+                                                    fontSize: 16,
+                                                    color: "#fff",
+                                                    transition: 'background-color 0.3s ease-in-out',
+                                                    '&:hover': {
+                                                        backgroundColor: colorConfigs.sidebar.bg,
+
+                                                    }
+                                                }}
+                                            >
+                                                Entrar
+                                            </Button>
+                                        ) : (
+                                            <Button 
+                                            variant="outlined"
+                                            color='neutral'
+                                            type='submit'
+                                            sx={{
+                                                '--variant-borderWidth': '1px',
+                                                borderRadius: 40,
+
+                                                mx: 'auto',
+                                                width: 180,
+                                                backgroundColor: colorConfigs.mycolor,
+                                                fontSize: 16,
+                                                color: "#fff",
+                                                transition: 'background-color 0.3s ease-in-out',
+                                                '&:hover': {
+                                                    backgroundColor: colorConfigs.sidebar.bg,
+
+                                                }
+                                            }}
+                                            >
+                                                <ClipLoader color={"#fff"} size={20} />
+                                            </Button>
+                                        )}
+                                    </Box>
+
                                 </FormControl>
                             </form>
                         </Card>
