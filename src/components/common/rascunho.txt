@@ -1,0 +1,8 @@
+ <Toolbar>
+                {/* <Typography variant="body1" sx={{ color: '#fff', marginRight: 1 }}>
+                    {userName}
+                </Typography>
+                <Avatar sx={{ backgroundColor: '#3f51b5' }} variant="rounded">
+                    {userInitial}
+                </Avatar> */}
+            </Toolbar>

@@ -1,115 +1,45 @@
-import React, { useContext, useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
-import { ToastContainer } from "react-toastify";
-import { AuthContext } from "../contexts/AuthContext";
-import { Navigate } from "react-router-dom";
-import { Home, AccountCircle, ExitToApp, Dashboard, MonetizationOn } from "@mui/icons-material";
+import { Box, Toolbar,useTheme, useMediaQuery  } from '@mui/material'
+import React from 'react'
+import Topbar from '../components/common/Topbar'
+import SizeConfigs from '../configs/SizeConfig'
+import Sidebar from '../components/common/Sidebar'
+import colorConfigs from '../configs/ColorConfig'
+import { Outlet } from 'react-router-dom'
 
 const AdminLayout = () => {
-    const { authenticated, user, loading, logout } = useContext(AuthContext);
-
-    useEffect(() => {
-        document.body.classList.remove("public-page");
-        document.body.classList.add("admin-page");
-    }, []);
-
-    const handleLogout = () => {
-        logout();
-    };
-
-    if (loading) {
-        return <div className="loading">Carregando...</div>;
-    }
-
-    if (!authenticated) {
-        return <Navigate to="/" />;
-    }
-
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); 
+    
     return (
-        <>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <a href="http://financiamento.co.mz/">
-                            {/* <img src={logo} alt="Financiamento" width={100} height={50} /> */}
-                        </a>
-                    </Typography>
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="user"
-                        aria-haspopup="true"
-                        onClick={() => {}}
-                        sx={{ mr: 2 }}
-                    >
-                        <AccountCircle />
-                    </IconButton>
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="logout"
-                        onClick={handleLogout}
-                        sx={{ mr: 2 }}
-                    >
-                        <ExitToApp />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                anchor="left"
+        <Box sx={{ display: "flex" }}>
+            <Topbar />
+            <Box
+                component="nav"
+                sx={{
+                    width: SizeConfigs.sidebar.width,
+                    flexShrink: 0
+                }}
             >
-                <List>
-                    <ListItem button component={Link} to={isCompetitor ? "/admin/inicio" : "/admin/dashboard"}>
-                        <ListItemIcon>
-                            <Home />
-                        </ListItemIcon>
-                        <ListItemText primary="Início" />
-                    </ListItem>
-                    {nav.map((menu) => (
-                        <ListItem key={menu.id}>
-                            <ListItemText primary={menu.label} />
-                            <List>
-                                {menu.items.map((item) => (
-                                    <ListItem button component={Link} to={item.link} key={item.id}>
-                                        <ListItemText primary={item.label} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </ListItem>
-                    ))}
-                    <ListItem button component={Link} to={"relatorio"}>
-                        <ListItemIcon>
-                            <MonetizationOn />
-                        </ListItemIcon>
-                        <ListItemText primary="Relatorios" />
-                    </ListItem>
-                </List>
-            </Drawer>
-            <div className="container">
-                <div className="bx--grid" style={{ paddingTop: "4rem", paddingBottom: "1.2rem" }}>
-                    <div className="main">
-                        <div className="bx--col-lg-14 bx--offset-lg-2">
-                            <ToastContainer
-                                theme="colored"
-                                position="top-right"
-                                autoClose={8000}
-                                hideProgressBar={false}
-                                newestOnTop={false}
-                                closeOnClick
-                                rtl={false}
-                                pauseOnFocusLoss
-                                draggable
-                                pauseOnHover
-                            />
-                            <Outlet />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+                <Sidebar />
+            </Box>
+            <Box
+            component="main"
+            sx={{
+                flexGrow:1,
+                width: `calc(100% -${SizeConfigs.sidebar.width})`,
+                minHeight:"100vh",
+                backgroundColor: colorConfigs.mainBg ,
+                margin:0
+                
+            }}
+            >
+               
+                <Toolbar/>
+                
+                <Outlet/>
+            </Box>
+        </Box>
+    )
 };
 
 export default AdminLayout;
