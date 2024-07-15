@@ -10,7 +10,7 @@ const AdicionarReserva = () => {
         mode={"CREATE"}
         url={"reservas/adicionarReserva"}
         successMessage={"Reserva criada com sucesso"}
-        onSuccessNavigateTo={""}
+        onSuccessNavigateTo={"/admin/reservas"}
         />
       </Card>
     </Box>
