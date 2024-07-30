@@ -29,7 +29,7 @@ const AdminLayout = () => {
                 width: `calc(100% -${SizeConfigs.sidebar.width})`,
                 minHeight:"100vh",
                 backgroundColor: colorConfigs.mainBg ,
-                margin:0
+                marginTop:1
                 
             }}
             >

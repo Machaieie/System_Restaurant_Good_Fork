@@ -25,13 +25,17 @@ const NestedListItem = styled(ListItemButton)({
 });
 
 const Sidebar = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     const role = user?.role || 'GUEST';
     const userMenu = SideRoute(role);
     const [open, setOpen] = useState({});
 
     const handleClick = (id) => {
         setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+    };
+
+    const handleLogout = () => {
+        logout();
     };
 
     return (
@@ -94,7 +98,7 @@ const Sidebar = () => {
                 ))}
             </List>
             <Box>
-                <NestedListItem button component={Link} to='/'>
+                <NestedListItem button  onClick={handleLogout}>
                     <ListItemIcon>
                         <LogoutOutlined sx={{ color: '#fff' }} />
                     </ListItemIcon>

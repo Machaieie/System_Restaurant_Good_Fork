@@ -9,8 +9,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-
   const navigate = useNavigate();
 
   const login = async (username, password) => {
@@ -19,40 +17,42 @@ export const AuthProvider = ({ children }) => {
         "username": `${username}`,
         "password": `${password}`
       });
-      console.log("AuthResponse =>", response)
       if (response.status === 200) {
         const principal = {
           id: response.data.id,
           username: response.data.username,
           nome: response.data.firstName,
           role: response.data.roles[0].role,
-          
         };
-        toast.success("Usuario cadastrado com sucesso!")
+        toast.success("Usuario cadastrado com sucesso!");
         setIsAuthenticated(true);
         localStorage.setItem("principal", JSON.stringify(principal));
         setUser(principal);
-
-        console.log("compilou tudo", principal)
+        
+        const redirectPath = localStorage.getItem("redirectPath") || "/admin/inicio";
+        localStorage.removeItem("redirectPath");
+        navigate(redirectPath);
       }
-      
-      navigate("/admin/inicio")
     } catch (error) {
       toast.error("Utilizador ou senha inválidos");
     }
   };
 
-
-
-
   useEffect(() => {
     const loggedUser = localStorage.getItem("principal");
     if (loggedUser) {
       const parsed = JSON.parse(loggedUser);
-
+      setUser(parsed);
+      setIsAuthenticated(true);
     }
-
   }, []);
+
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("principal");
+    navigate("/login");
+  };
 
   return (
     <>
@@ -61,14 +61,12 @@ export const AuthProvider = ({ children }) => {
           isAuthenticated,
           user,
           login,
-
+          logout
         }}
       >
         {children}
       </AuthContext.Provider>
       <ToastContainer />
     </>
-
-
   );
 };
