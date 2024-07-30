@@ -1,10 +1,11 @@
 import React from 'react'
+import {Box} from "@mui/joy";
 
 const Pedidos = () => {
   return (
-    <div>
+    <Box>
       Pedidos
-    </div>
+    </Box>
   )
 }
 

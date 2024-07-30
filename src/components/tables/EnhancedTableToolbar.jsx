@@ -8,16 +8,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import PropTypes from 'prop-types';
 import RestaurantModal from '../modal/RestaurantModal';
+import http from "../../http-common";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
-const EnhancedTableToolbar = ({ numSelected, selectedItems, headCells, onConfirmDelete }) => {
+const EnhancedTableToolbar = ({ numSelected, selectedItems, headCells }) => {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleConfirm = async () => {
         try {
-            await onConfirmDelete(selectedItems); // Pass the delete logic to parent component
+            const selectedIds = selectedItems.map((item) => item.id);
+
+            await http.delete(`/reservas/reserva/${selectedIds.join(',')}`);
             setOpen(false);
+            navigate('/admin/reservas');
+            toast.success('Itens deletados com sucesso');
+           
+
         } catch (error) {
-            console.error('Erro ao deletar itens:', error);
+            toast.error(`Erro ao deletar itens: ${error}`);
         }
     };
 
@@ -95,6 +105,7 @@ const EnhancedTableToolbar = ({ numSelected, selectedItems, headCells, onConfirm
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
+            <ToastContainer />
         </>
     );
 };
@@ -103,7 +114,6 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
     selectedItems: PropTypes.array.isRequired,
     headCells: PropTypes.array.isRequired,
-    onConfirmDelete: PropTypes.func.isRequired,
+    onDeleteSuccess: PropTypes.func,
 };
-
 export default EnhancedTableToolbar;

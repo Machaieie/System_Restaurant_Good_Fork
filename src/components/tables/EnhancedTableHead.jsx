@@ -1,4 +1,6 @@
-import {Box} from "@mui/material"
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
 import Checkbox from '@mui/joy/Checkbox';
 import Link from '@mui/joy/Link';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';

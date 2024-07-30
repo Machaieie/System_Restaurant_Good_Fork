@@ -1,5 +1,4 @@
-import {useState} from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import Box from '@mui/joy/Box';
 import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
@@ -14,7 +13,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
-
+import PropTypes from 'prop-types';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -59,19 +58,12 @@ const RestaurantTable = ({ rows, headCells }) => {
     
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id); 
-            setSelected(newSelected);
+            const newSelecteds = rows.map((n) => n.id);
+            setSelected(newSelecteds);
             return;
         }
         setSelected([]);
     };
-    const handleEdit = () => {
-        if (selected.length === 1) {
-            navigate(`/admin/editarReserva/${selected[0]}`);
-        }
-    };
-
-    
 
     const handleClick = (event, id) => {
         const selectedIndex = selected.indexOf(id);
@@ -102,20 +94,20 @@ const RestaurantTable = ({ rows, headCells }) => {
         setPage(0);
     };
 
-   
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    const selectedItems = rows.filter(row => selected.includes(row.id));
+
     return (
         <Box>
-
             <Sheet
                 variant="outlined"
                 sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
             >
-                <EnhancedTableToolbar numSelected={selected.length} headCells={headCells} selectedItems={selected}/>
+                <EnhancedTableToolbar numSelected={selected.length} headCells={headCells} selectedItems={selectedItems}  />
                 <Table
                     aria-labelledby="tableTitle"
                     hoverRow
@@ -155,7 +147,7 @@ const RestaurantTable = ({ rows, headCells }) => {
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
-                                        key={row.id} // Use `id` as key
+                                        key={row.id}
                                         selected={isItemSelected}
                                     >
                                         <td padding="checkbox">
