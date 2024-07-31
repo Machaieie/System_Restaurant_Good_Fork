@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button } from '@mui/joy';
+import { Box, Button, Divider, Grid } from '@mui/joy';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import RestaurantTable from '../../components/tables/RestaurantTable';
 import http from '../../http-common';
 import { toast, ToastContainer } from 'react-toastify';
+import RestaurantCard from '../../components/cards/RestaurantCard';
 
 // Definição de headCells
 const headCells = [
@@ -32,9 +33,9 @@ const Reservas = () => {
                     phone: reservation.phone,
                     email: reservation.email,
                 }));
-                
+
                 setReservations(transformedData);
-            } else if(response.status==204){
+            } else if (response.status == 204) {
                 setReservations([]);
             }
         } catch (error) {
@@ -53,6 +54,21 @@ const Reservas = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} lg={3}>
+                    <RestaurantCard title="Reservas Efectuadas" content={20} circularValue={50} />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                    <RestaurantCard title="Reservas Pendentes" content={20} circularValue={50} />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                    <RestaurantCard title="Reservas Canceladas" content={20} circularValue={50} />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={3}>
+                    <RestaurantCard title="Reservas Concluidas" content={20} circularValue={50} />
+                </Grid>
+            </Grid>
+            <Divider sx={{marginTop:2}}/>
             <Button
                 endDecorator={<KeyboardArrowRight />}
                 sx={{
@@ -60,6 +76,7 @@ const Reservas = () => {
                     bgcolor: 'success.main',
                     color: 'white',
                     '&:hover': { bgcolor: 'success.dark' },
+                    marginTop:3
                 }}
                 onClick={handleAddReservation}
             >

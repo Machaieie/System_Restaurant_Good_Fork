@@ -51,44 +51,14 @@ const SideRoute = (role) => {
       label: "Pedidos",
       roles: ["ADMIN", "EMPLOYEE"],
       icon: <RuleRounded sx={iconStyle} />,
-      items: [
-        {
-          id: 3.1,
-          label: "Registar",
-          link: "/admin/adicionarPedido",
-          roles: ["ADMIN", "EMPLOYEE"],
-          icon: <AddOutlined sx={iconStyle} />
-        },
-        {
-          id: 3.2,
-          label: "Consultar",
-          link: "/admin/pedidos",
-          roles: ["ADMIN", "EMPLOYEE"],
-          icon: <ListRounded sx={iconStyle} />
-        },
-      ],
+      link: "/admin/pedidos",
     },
     {
       id: 4,
       label: "Pratos",
       roles: ["ADMIN", "EMPLOYEE"],
       icon: <DinnerDiningOutlined sx={iconStyle} />,
-      items: [
-        {
-          id: 4.1,
-          label: "Adicionar",
-          link: "/admin/adicionarPrato",
-          roles: ["ADMIN", "EMPLOYEE"],
-          icon: <DinnerDiningOutlined sx={iconStyle} />
-        },
-        {
-          id: 4.2,
-          label: "Consultar",
-          link: "/admin/pedidos",
-          roles: ["ADMIN", "EMPLOYEE"],
-          icon: <ListRounded sx={iconStyle} />
-        },
-      ],
+      link: "/admin/pratos",
     },
     {
       id: 5,

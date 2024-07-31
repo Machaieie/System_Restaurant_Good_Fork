@@ -29,9 +29,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("principal", JSON.stringify(principal));
         setUser(principal);
         
-        const redirectPath = localStorage.getItem("redirectPath") || "/admin/inicio";
-        localStorage.removeItem("redirectPath");
-        navigate(redirectPath);
+       
+        navigate( "/admin/inicio");
       }
     } catch (error) {
       toast.error("Utilizador ou senha inválidos");
