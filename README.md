@@ -109,10 +109,18 @@ Follow me on Instagram: [Edwin Machaieie](https://www.instagram.com/edwin_machai
 
 ## Screens 
 
-1. ![Login Screen](./src/assets/SystemImages/TelaLogin.png)
-2. ![Login Screen](./src/assets/SystemImages/telareservas.png)
-3. ![Login Screen](./src/assets/SystemImages/telareserva.png)
-4. ![Login Screen](./src/assets/SystemImages/telaPedidos.png)
+### 1. Login Screen
+![Login Screen](./src/assets/SystemImages/TelaLogin.png)
+The login screen allows users to authenticate themselves by entering their credentials (username and password). This ensures secure access to the system's functionalities.
 
+### 2. Reservations Screen
+![Reservations Screen](./src/assets/SystemImages/telareservas.png)
+The reservations screen displays a list of all current reservations. Users can view the details of each reservation, check for available slots, and ensure there are no double bookings.
 
+### 3. Reservation Form Screen
+![Reservation Form Screen](./src/assets/SystemImages/telareserva.png)
+The reservation form screen enables users to make new reservations. Users can input customer details, select the date and time, and submit the reservation request.
 
+### 4. Orders Screen
+![Orders Screen](./src/assets/SystemImages/telaPedidos.png)
+The orders screen lists all active orders. Users can view the details of each order, including the dishes and quantities, verify the status of the orders, and cancel orders if necessary.
