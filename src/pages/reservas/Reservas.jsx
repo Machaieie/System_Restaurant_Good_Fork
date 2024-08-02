@@ -56,16 +56,16 @@ const Reservas = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <RestaurantCard title="Reservas Efectuadas" content={20} circularValue={50} />
+                    <RestaurantCard title="Reservas Efectuadas" content={20} circularValue={20} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <RestaurantCard title="Reservas Pendentes" content={20} circularValue={50} />
+                    <RestaurantCard title="Reservas Pendentes" content={5} circularValue={5} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <RestaurantCard title="Reservas Canceladas" content={20} circularValue={50} />
+                    <RestaurantCard title="Reservas Canceladas" content={0} circularValue={0} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <RestaurantCard title="Reservas Concluidas" content={20} circularValue={50} />
+                    <RestaurantCard title="Reservas Concluidas" content={15} circularValue={15} />
                 </Grid>
             </Grid>
             <Divider sx={{marginTop:2}}/>

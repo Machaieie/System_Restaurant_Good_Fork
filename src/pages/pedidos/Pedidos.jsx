@@ -5,7 +5,6 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import NoMealsIcon from '@mui/icons-material/NoMeals';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import RamenDiningIcon from '@mui/icons-material/RamenDining';
-import SimpleTable from '../../components/tables/SimpleTable';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import colorConfigs from '../../configs/ColorConfig';
 import FormControl from '@mui/joy/FormControl';
