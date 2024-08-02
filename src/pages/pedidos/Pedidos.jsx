@@ -13,7 +13,10 @@ import FormLabel from '@mui/joy/FormLabel';
 import Autocomplete, { createFilterOptions } from '@mui/joy/Autocomplete';
 import http from '../../http-common';
 import RestaurantSimpleTableButtons from '../../components/tables/RestaurantSimpleTableButtons';
-
+import { toast, ToastContainer } from "react-toastify";
+import RestauranteSimpleTable from '../../components/tables/RestauranteSimpleTable';
+import TextField from '@mui/material/TextField';
+import RestauranteSelect from '../../components/select/RestauranteSelect';
 const filterOptions = createFilterOptions({
   matchFrom: 'start',
   stringify: (option) => option.nomeItem,
@@ -25,24 +28,54 @@ const filterOptions2 = createFilterOptions({
 
 const Pedidos = () => {
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [prato, setPrato] = useState([]);
   const [cliente, setCliente] = useState([]);
   const [listaItemsPedidos, setListaItemsPedidos] = useState([]);
   const [listaPedidos, setListaPedidos] = useState([]);
+  const [selectedCliente, setSelectedCliente] = useState(null);
+  const [selectedReservaId, setSelectedReservaId] = useState(null);
+ const [tipoPrato, setTipoPrato] = useState('');
+  const [statusPedido, setStatusPedido] = useState('');
+
+  const handleStatusPedidoChange = (value) => {
+    setStatusPedido(value);
+  };
+
+  const handTipoPratoChange = (value) => {
+    setTipoPrato(value);
+  };
+
+  const estadoPedido = [
+    { value: "PENDENTE", label: "Pendente" },
+    { value: "ATENDIDO", label: "Atendido" },
+    { value: "CANCELADA", label: "Cancelada" },
+  ];
+  
+  const typePrato = [
+    { value: "PRATO_PRINCIPAL", label: "Prato Principal" },
+    { value: "SOBREMESA", label: "Sobremesa" },
+    { value: "BEBIDA", label: "Bebida" },
+    { value: "ENTRADA", label: "Entrada" },
+  ];
+  
 
   const fetchData = async () => {
     const pratos = await http.get('/pratos/todos');
     const clientes = await http.get('/reservas/pegarTodos');
+    const pedds = await http.get('/pedidos/detalhados');
     setPrato(pratos.data);
     setCliente(clientes.data);
+    setListaPedidos(pedds.data);
+
   };
 
   const headers1 = [
-    { label: 'Dessert (40%)', key: 'name', style: { width: '40%' } },
-    { label: 'Calories', key: 'calories' },
-    { label: 'Fat (g)', key: 'fat' },
-    { label: 'Carbs (g)', key: 'carbs' },
-    { label: 'Protein (g)', key: 'protein' },
+    { label: 'Cliente', key: 'nomeCliente' },
+    { label: 'Prato', key: 'nomePrato' },
+    { label: 'Tipo Prato', key: 'tipoPrato' },
+    { label: 'Status', key: 'statusPedido' },
+    { label: 'Quantidade', key: 'quantidade' },
   ];
 
   const headers = [
@@ -74,7 +107,7 @@ const Pedidos = () => {
   };
 
   const handleIncrement = (id) => {
-    const updatedItems = listaItemsPedidos.map(item => 
+    const updatedItems = listaItemsPedidos.map(item =>
       item.id === id ? { ...item, quantidade: item.quantidade + 1 } : item
     );
     setListaItemsPedidos(updatedItems);
@@ -85,11 +118,51 @@ const Pedidos = () => {
     setListaItemsPedidos(updatedItems);
   };
 
-  const handleClienteChange = (event, value) => { };
+  const handleClienteChange = (event, value) => {
+    if (value) {
+      setSelectedCliente(value);
+      setSelectedReservaId(value.id);
+    }
+  };
 
   const handleClearTable = () => {
     setListaItemsPedidos([]);
   };
+
+  const onSubmit = async () => {
+    if (!selectedReservaId) {
+      toast.warning("Selecione um cliente para adicionar o pedido.");
+      return;
+    }
+
+    if (listaItemsPedidos.length === 0) {
+      toast.warning("Selecione pelo menos um prato para adicionar o pedido.");
+      return;
+    }
+
+    const pedidoDTO = {
+      reserva_id: selectedReservaId,
+      statusPedido: "PENDENTE",
+      itensPedido: listaItemsPedidos.map(item => ({
+        quantidade: item.quantidade,
+        pratoId: item.id
+      }))
+    };
+
+    try {
+      await http.post('/pedidos/adicionarPedido', pedidoDTO);
+      setOpen(false);
+      // Limpar a lista de itens pedidos após a submissão
+      setListaItemsPedidos([]);
+      toast.success("Pedido adicionado com sucesso");
+    } catch (error) {
+      toast.error("Erro ao adicionar pedido!");
+    }
+  };
+
+  const onUpdate = async () => {
+    setOpen2(true);
+  }
 
   useEffect(() => {
     fetchData();
@@ -173,7 +246,7 @@ const Pedidos = () => {
                 flexDirection: { xs: 'column', sm: 'row-reverse' },
               }}
             >
-              <Button variant="solid" sx={{ backgroundColor: colorConfigs.sidebar.bg }} onClick={() => setOpen(false)}>
+              <Button variant="solid" sx={{ backgroundColor: colorConfigs.sidebar.bg }} onClick={onSubmit}>
                 Adicionar
               </Button>
               <Button
@@ -195,7 +268,68 @@ const Pedidos = () => {
       </Box>
       <Divider sx={{ marginTop: 2 }} />
 
-      <SimpleTable headers={headers1} rows={listaPedidos} />
+      <RestauranteSimpleTable headers={headers1} rows={listaPedidos} onUpdate={onUpdate} />
+      <Modal open={open2} onClose={() => setOpen2(false)}>
+        <ModalDialog
+          aria-labelledby="nested-modal-title"
+          aria-describedby="nested-modal-description"
+          sx={(theme) => ({
+            [theme.breakpoints.only('xs')]: {
+              top: 'unset',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderRadius: 0,
+              transform: 'none',
+              maxWidth: 'unset',
+            },
+          })}
+        >
+          <Typography id="nested-modal-title" level="h2">
+            Atualizar Estado do Pedido
+          </Typography>
+          <Box
+            component="form"
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+              <TextField id="outlined-basic" label="Cliente" variant="outlined" />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+              <TextField id="outlined-basic" label="Prato" variant="outlined" />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+                <RestauranteSelect onChange={handTipoPratoChange} label="Tipo de Prato" options={typePrato} value={tipoPrato}/>
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+                <RestauranteSelect onChange={handleStatusPedidoChange} label="Estado do Pedido" options={estadoPedido} value={statusPedido}/>
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+              <TextField id="outlined-basic" label="Quantidade" variant="outlined" />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              mt: 1,
+              display: 'flex',
+              gap: 1,
+              flexDirection: { xs: 'column', sm: 'row-reverse' },
+            }}
+          >
+            <Button variant="solid" color="primary" onClick={() => setOpen2(false)}>
+              Continue
+            </Button>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => setOpen2(false)}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </ModalDialog>
+      </Modal>
     </Box>
   );
 };

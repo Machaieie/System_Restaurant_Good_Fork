@@ -6,9 +6,9 @@ import CardActions from '@mui/joy/CardActions';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Typography from '@mui/joy/Typography';
 import colorConfigs from '../../configs/ColorConfig'
-const RestaurantCard = ({ title, content, circularValue, icon: Icon, color }) => {
+const RestaurantCard = ({ title, content, circularValue, icon: Icon, color ,width,height}) => {
     return (
-        <Card variant="solid" sx={{ width: 270, backgroundColor: color || colorConfigs.sidebar.bg, height: 100 }} invertedColors>
+        <Card variant="solid" sx={{ width: width, backgroundColor: color || colorConfigs.sidebar.bg, height: height, minHeight:90 }} invertedColors>
             <CardContent orientation="horizontal">
                 <CircularProgress size="lg" determinate value={circularValue}>
                     {Icon && (
